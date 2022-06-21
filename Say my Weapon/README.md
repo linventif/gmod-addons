@@ -1,3 +1,5 @@
+<img src="blob:https://imgur.com/7081e5ac-3001-40f8-a2ba-67a28a3ff64a" alt="Linventif" style="height: 100px; width:100px;"/>
+
 # Inforamtions
 
 🇺🇸 | This script displays a message in the chat when a player picks up a listed weapon.
