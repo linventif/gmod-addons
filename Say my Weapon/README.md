@@ -1,4 +1,4 @@
-![This is an image](https://i.imgur.com/EnhaEZ4.png)
+![Picture of Linventif Say my Weapon](https://i.imgur.com/EnhaEZ4.png)
 
 # Inforamtions
 
