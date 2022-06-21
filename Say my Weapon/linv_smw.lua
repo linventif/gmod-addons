@@ -1,14 +1,12 @@
-weapon_trigger = {
-    "weapon_357",
-    "weapon_crowbar",
-    "add_weapon_name" 
+local weapon_trigger = {
+    weapon_357 = true,
+    weapon_crowbar = true,
+    gmod_tool = true,
+    name_weapon = true
 }
 
-hook.Add( "PlayerSwitchWeapon", "ply_switch_wepon", function( ply, oldWeapon, newWeapon )
-    for k, v in pairs(weapon_trigger) do
-        if newWeapon:GetClass() == v then
-            RunConsoleCommand("say", "/me sort un.e " .. newWeapon:GetClass())
-        end
+hook.Add( "PlayerSwitchWeapon", "WeaponSwitchExample", function( ply, oldWeapon, newWeapon )
+    if weapon_trigger[newWeapon:GetClass()] then
+        RunConsoleCommand("say", "/me sort un.e " .. newWeapon:GetClass())
     end
-    
-end )
+end) 
