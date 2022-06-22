@@ -1,6 +1,6 @@
 ![Picture of Linventif Say my Weapon](https://i.imgur.com/b8F4sL0.png)
 
-# Inforamtions
+# Informations
 
 🇺🇸 | This addon allows you to display a menu to reset player's default var (food - armor - health).
 

@@ -6,6 +6,5 @@ if SERVER then
 elseif CLIENT then
 
     include("afal/client/cl_afal.lua")
-    
 
 end
