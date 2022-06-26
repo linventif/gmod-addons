@@ -1,5 +1,5 @@
 print(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-print(" - - - - - - - - - - ULX FOOD M0DULE - - - - - - - - - - - ")
+print(" - - - - - - - ULX Reset Armor Health Food - - - - - - - - ")
 print(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 print(" - - - - - - - - - Module by Linventif - - - - - - - - - - ")
 print(" - - - - Join my discord : https://dsc.gg/linventif  - - - ")
@@ -9,16 +9,16 @@ print(" - - - -  Avec le soutient de Garry's Mod France - - - - - ")
 print(" - Rejoigniez le discord : https://discord.gg/6n5SEJAhGp - ")
 print(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 
+function ulx.rahf( calling_ply, target_plys )
 
-function ulx.food( calling_ply, target_plys, amount )
 	for i=1, #target_plys do
-		target_plys[ i ]:setSelfDarkRPVar( "Energy", amount )
+		target_plys[ i ]:SetHealth(target_plys[ i ]:GetMaxHealth())
+		target_plys[ i ]:SetArmor(target_plys[ i ]:GetMaxArmor())
+		target_plys[ i ]:setSelfDarkRPVar("Energy", 100)
 	end
-	ulx.fancyLogAdmin( calling_ply, "#A set the food for #T to #i", target_plys, amount )
+	ulx.fancyLogAdmin( calling_ply, "#A has restore the food, health and armor of : #T", target_plys )
 end
-
-local food = ulx.command( CATEGORY_NAME, "ulx food", ulx.food, "!food" )
-food:addParam{ type=ULib.cmds.PlayersArg }
-food:addParam{ type=ULib.cmds.NumArg, min=0, max=255, hint="food", ULib.cmds.round }
-food:defaultAccess( ULib.ACCESS_ADMIN )
-food:help( "Sets the food for target(s)." )
+local rahf = ulx.command( CATEGORY_NAME, "ulx rahf", ulx.rahf, "!rahf" )
+rahf:addParam{ type=ULib.cmds.PlayersArg }
+rahf:defaultAccess( ULib.ACCESS_ADMIN )
+rahf:help( "Restore default settings" )
