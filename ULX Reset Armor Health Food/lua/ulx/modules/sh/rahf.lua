@@ -18,7 +18,7 @@ function ulx.rahf( calling_ply, target_plys )
 	end
 	ulx.fancyLogAdmin( calling_ply, "#A has restore the food, health and armor of : #T", target_plys )
 end
-local rahf = ulx.command( CATEGORY_NAME, "ulx rahf", ulx.rahf, "!rahf" )
+local rahf = ulx.command( "Linventif", "ulx rahf", ulx.rahf, "!rahf" )
 rahf:addParam{ type=ULib.cmds.PlayersArg }
 rahf:defaultAccess( ULib.ACCESS_ADMIN )
 rahf:help( "Restore default settings" )
