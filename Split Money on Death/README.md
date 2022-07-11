@@ -1,4 +1,4 @@
-![Picture of Linventif Say my Weapon](https://i.imgur.com/EnhaEZ4.png)
+![Picture of Linventif Say my Weapon](https://imgur.com/Dk7dso3)
 
 # Inforamtions
 
