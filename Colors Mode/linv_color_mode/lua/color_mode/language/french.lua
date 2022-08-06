@@ -1,0 +1,19 @@
+Color_Mode.Language = {    
+    Addr = "Rouge",
+    Addg = "Vert",
+    Addb = "Bleu",
+    Brightness = "Luminosité",
+    Contrast = "Contraste",
+    Color = "Couleur",
+    Confirm = "Ecraser",
+    Cancel = "Annuler",
+    Mode_Reset = "Reset Color Mode",
+    Mode_Boost = "Booster les Couleurs",
+    Not_Admin = "Accès Refusé",
+    Custom_Mode_Save = "Enregistrer la config",
+    Custom_Mode_Load = "Load Custom Save",
+    Admin_Message = "D'autres options arriveront dans les prochaines mises à jour.",
+    Config_Save = "Configuration enregistrer",
+    All_Load = "Configuration charger",
+    No_Config = "Aucune configuration trouvé"
+}
