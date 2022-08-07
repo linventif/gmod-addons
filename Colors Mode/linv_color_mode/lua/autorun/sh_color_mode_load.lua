@@ -25,25 +25,24 @@ include(folder .. "/sh_config.lua")
 if SERVER then
     print("| OK | addons/" .. addon_name .. "lua/autorun/" .. addon_name .. "_load.lua")
     print("| OK | addons/" .. addon_name .. "lua/" .. folder .. "/sh_config.lua")
-
-    util.AddNetworkString("color_mode_config")
+    
     if !file.Exists("linventif", "data") then
         file.CreateDir("linventif")
         file.Write("linventif/linv_color_mode.json", util.TableToJSON(Color_Mode.Config))
     elseif !file.Exists("linventif/linv_color_mode.json", "DATA") then
         file.Write("linventif/linv_color_mode.json", util.TableToJSON(Color_Mode.Config))
-    elseif file.Read("linventif/linv_color_mode.json", "DATA") != util.TableToJSON(Color_Mode.Config) then
+    else
         Color_Mode.Config = util.JSONToTable(file.Read("linventif/linv_color_mode.json", "DATA"))
-        net.Start("color_mode_config")
-            net.WriteTable(Color_Mode.Config)
-        net.Broadcast()
         print("| OK | data/linventif/linv_color_mode.json")
     end
+    
+    AddCSLuaFile(folder .. "/language/" .. Color_Mode.Config.Language .. ".lua")
+    print(Color_Mode.Config.Language)
 
-    for k, v in ipairs(file.Find(folder .. "/language/*.lua", "LUA")) do
-		AddCSLuaFile(folder .. "/language/" .. v)
-        print("| OK | addons/" .. addon_name .. "lua/" .. folder .. "/language/" .. v)
-	end
+    --for k, v in ipairs(file.Find(folder .. "/language/*.lua", "LUA")) do
+	--	AddCSLuaFile(folder .. "/language/" .. v)
+    --    print("| OK | addons/" .. addon_name .. "lua/" .. folder .. "/language/" .. v)
+	--end
 
 	for k, v in ipairs(file.Find(folder .. "/client/*.lua", "LUA")) do
 		AddCSLuaFile(folder .. "/client/" .. v)
@@ -55,13 +54,23 @@ if SERVER then
         print("| OK | addons/" .. addon_name .. "lua/" .. folder .. "/server/" .. v)
 	end
 else
-    net.Receive("color_mode_config", function()
-        Color_Mode.Config = net.ReadTable()
-        include(folder .. "/language/" .. Color_Mode.Config.Language .. ".lua")
+    print(Color_Mode.Config.Language)
+    --  net.Receive("color_mode_ply_load", function()
+    --      PrintTable(Color_Mode.Config)
+    --      
+    --      Color_Mode.Config = net.ReadTable()
+    --      Color_Mode.Admin_Config = Color_Mode.Config
+    --      
+    --      print(folder .. "/language/" .. Color_Mode.Config.Language .. ".lua")
+    --  end)
 
-        for k, v in ipairs(file.Find(folder .. "/client/*.lua", "LUA")) do
-            if v == "cl_hud_util.lua" then continue end
-            include(folder .. "/client/" .. v)
-        end
-    end)    
+    include(folder .. "/language/" .. Color_Mode.Config.Language .. ".lua")
+
+    for k, v in ipairs(file.Find(folder .. "/client/*.lua", "LUA")) do
+        include(folder .. "/client/" .. v)
+        print(folder .. "/client/" .. v)
+    end
 end
+
+print(" ")
+print(" ")

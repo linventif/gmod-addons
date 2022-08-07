@@ -7,7 +7,8 @@ Color_Mode.Language = {
     Color = "Couleur",
     Confirm = "Ecraser",
     Cancel = "Annuler",
-    Mode_Reset = "Reset Color Mode",
+    Mode_Reset = "Réinitialisé",
+    Notif_Mode_Reset = "Configuration Réinitialisé",
     Mode_Boost = "Booster les Couleurs",
     Not_Admin = "Accès Refusé",
     Custom_Mode_Save = "Enregistrer la config",
@@ -15,5 +16,10 @@ Color_Mode.Language = {
     Admin_Message = "D'autres options arriveront dans les prochaines mises à jour.",
     Config_Save = "Configuration enregistrer",
     All_Load = "Configuration charger",
-    No_Config = "Aucune configuration trouvé"
+    No_Config = "Aucune configuration trouvé",
+    Language = "Langue",
+    Default_Mode = "Mode par défault",
+    Button_Top = "Bouton au dessu",
+
+    Config_Save_Admin = "Configuration Enregistrer | Redemarer le Serveur"
 }

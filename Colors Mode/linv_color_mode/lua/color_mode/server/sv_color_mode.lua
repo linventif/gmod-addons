@@ -1,36 +1,31 @@
-util.AddNetworkString("open_color_mode")
-util.AddNetworkString("open_color_mode_admin")
-util.AddNetworkString("open_color_mode_not_admin")
-util.AddNetworkString("open_color_mode_config")
-util.AddNetworkString("open_color_mode_admin_config")
-util.AddNetworkString("open_color_mode_admin_config_save")
+util.AddNetworkString("color_mode_open")
+util.AddNetworkString("color_mode_open_admin")
+util.AddNetworkString("color_mode_save_config")
+util.AddNetworkString("color_mode_ply_load")
 
-hook.Add("PlayerSay", "ply_say_open_color_mode", function(ply, text)
+hook.Add("PlayerSay", "Color_Mode_Open", function(ply, text)
     if Color_Mode.Config.Commands[text] then
-        net.Start("open_color_mode")
+        net.Start("color_mode_open")
         net.Send(ply)
     end
 end)
 
-hook.Add("PlayerSay", "ply_say_open_color_mode_admin", function(ply, text)
+hook.Add("PlayerSay", "Color_Mode_Open_Admin", function(ply, text)
     if Color_Mode.Config.Commands_Admin[text] then
-        if Color_Mode.Config.Admin[ply:GetUserGroup()] then
-            net.Start("open_color_mode_admin")
-            net.Send(ply)
-        else
-            net.Start("open_color_mode_not_admin")
-            net.Send(ply)
-        end
+        net.Start("color_mode_open_admin")
+        net.Send(ply)
     end
 end)
 
-net.Receive("open_color_mode_admin_config", function(len, ply)
+net.Receive("color_mode_save_config", function(len, ply)
+    local table_read = net.ReadTable()
     if Color_Mode.Config.Admin[ply:GetUserGroup()] then
-        file.Write("linventif/linv_color_mode.json", util.TableToJSON(net.ReadTable()))
-        net.Start("open_color_mode_admin_config_save")
-        net.Send(ply)
-    else            
-        net.Start("open_color_mode_not_admin")
-        net.Send(ply)
+        file.Write("linventif/linv_color_mode.json", util.TableToJSON(table_read))
     end
 end)
+
+--  hook.Add( "PlayerInitialSpawn", "Color_Mode_Config", function( ply )
+--  	net.Start("color_mode_ply_load")
+--          net.WriteTable(Color_Mode.Config)
+--      net.Send(ply)
+--  end)

@@ -1,7 +1,12 @@
+
+-- DEFAULT CONFIGURATION DON'T CONFIGURE HERE !!!
+
 Color_Mode.Config = Color_Mode.Config or {}
 Color_Mode.Config.Version = 1
 
 Color_Mode.Config.Language = "french" -- french or english
+
+--Color_Mode.Language[Color_Mode.Config.Language]
 
 Color_Mode.Config.Size = {
     x = 750,
@@ -12,6 +17,7 @@ Color_Mode.Config.BackGroundColor = Color(34, 34, 34)
 Color_Mode.Config.ButtonColor = Color(60, 90, 120)
 
 Color_Mode.Config.Button_on_Top = false
+Color_Mode.Config.Default_Mode = "boost" -- normal or boost
 
 Color_Mode.Config.Commands = { 
     ["!cm"] = true,
@@ -26,4 +32,28 @@ Color_Mode.Config.Commands_Admin = {
 Color_Mode.Config.Admin = { 
     ["superadmin"] = true,
     ["admin"] = false
+}
+
+Color_Mode.Color_Default = {
+    ["$pp_colour_addr"]         = 0,
+    ["$pp_colour_addg"]         = 0,
+    ["$pp_colour_addb"]         = 0,
+    ["$pp_colour_brightness"]   = 0,
+    ["$pp_colour_contrast"]     = 1,
+    ["$pp_colour_colour"]       = 1,
+    ["$pp_colour_mulr"]         = 0,
+    ["$pp_colour_mulg"]         = 0,
+    ["$pp_colour_mulb"]         = 0
+}
+
+Color_Mode.Color_Boost = {
+    ['$pp_colour_addr']         = 0.01,
+    ["$pp_colour_addg"]         = 0,
+    ['$pp_colour_addb']         = 0.01,
+    ['$pp_colour_brightness']   = 0.01,
+    ['$pp_colour_contrast']     = 1.05,
+    ['$pp_colour_colour']       = 1.62,
+    ["$pp_colour_mulr"]         = 0,
+    ["$pp_colour_mulg"]         = 0,
+    ["$pp_colour_mulb"]         = 0
 }
