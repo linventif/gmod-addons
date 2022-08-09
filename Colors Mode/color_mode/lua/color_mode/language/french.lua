@@ -21,5 +21,5 @@ Color_Mode.Language = {
     Default_Mode = "Mode par défault",
     Button_Top = "Bouton au dessu",
 
-    Config_Save_Admin = "Configuration Enregistrer | Redemarer le Serveur"
+    Config_Save_Admin = "Configuration Enregistrer"
 }

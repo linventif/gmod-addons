@@ -1,29 +1,37 @@
+local folder = "color_mode"
 local button_y = 0
 local slider_y = {}
+
+net.Receive("color_mode_ply_load", function()
+    Color_Mode.Config = net.ReadTable()
+    Color_Mode.Admin_Config = Color_Mode.Config
+    include(folder .. "/language/" .. Color_Mode.Config.Language .. ".lua")
+end)
+
 
 if !file.Exists("linventif", "data") then
     file.CreateDir("linventif")
     if Color_Mode.Config.Default_Mode != "boost" then 
-        file.Write("linventif/linv_color_mode.json", util.TableToJSON(Color_Mode.Color_Default))
+        file.Write("linventif/color_mode.json", util.TableToJSON(Color_Mode.Color_Default))
     else
-        file.Write("linventif/linv_color_mode.json", util.TableToJSON(Color_Mode.Color_Boost))
+        file.Write("linventif/color_mode.json", util.TableToJSON(Color_Mode.Color_Boost))
     end
-elseif !file.Exists("linventif/linv_color_mode.json", "DATA") then
+elseif !file.Exists("linventif/color_mode.json", "DATA") then
     if Color_Mode.Config.Default_Mode != "boost" then 
-        file.Write("linventif/linv_color_mode.json", util.TableToJSON(Color_Mode.Color_Default))
+        file.Write("linventif/color_mode.json", util.TableToJSON(Color_Mode.Color_Default))
     else
-        file.Write("linventif/linv_color_mode.json", util.TableToJSON(Color_Mode.Color_Boost))
+        file.Write("linventif/color_mode.json", util.TableToJSON(Color_Mode.Color_Boost))
     end
 end
 
-if Color_Mode.Config.Button_on_Top then 
+if Color_Mode.Config.Button_on_Top then
     button_y = 45
     slider_y = {
         [1] = 80,
         [2] = 160,
         [3] = 240
     }
-else 
+else
     button_y = Color_Mode.Config.Size.y-65
     slider_y = {
         [1] = 15,
@@ -32,9 +40,8 @@ else
     }
 end
 local ply_load = false
-net.Receive("color_mode_ply_load", function() ply_load = true end)
 
-Color_Mode.Color = util.JSONToTable(file.Read("linventif/linv_color_mode.json", "DATA"))
+Color_Mode.Color = util.JSONToTable(file.Read("linventif/color_mode.json", "DATA"))
 hook.Add("RenderScreenspaceEffects", "RefreshColors", function()
     DrawColorModify(Color_Mode.Color)
 end)
@@ -220,8 +227,8 @@ local function Color_Mode_Open()
         draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
     end
     Button_3.DoClick = function()
-        if file.Size("linventif/linv_color_mode.json", "DATA") != 0 then
-            Color_Mode.Color = util.JSONToTable( file.Read("linventif/linv_color_mode.json", "DATA"))
+        if file.Size("linventif/color_mode.json", "DATA") != 0 then
+            Color_Mode.Color = util.JSONToTable( file.Read("linventif/color_mode.json", "DATA"))
             Num_Slider_1:SetValue(Color_Mode.Color["$pp_colour_addr"])
             Num_Slider_2:SetValue(Color_Mode.Color["$pp_colour_addg"])
             Num_Slider_3:SetValue(Color_Mode.Color["$pp_colour_addb"])
@@ -246,7 +253,7 @@ local function Color_Mode_Open()
         draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
     end
     Button_4.DoClick = function()
-        file.Write("linventif/linv_color_mode.json", util.TableToJSON(Color_Mode.Color))
+        file.Write("linventif/color_mode.json", util.TableToJSON(Color_Mode.Color))
         notification.AddLegacy(Color_Mode.Language.Config_Save, 0, 3)        
     end
     
@@ -272,7 +279,6 @@ local function Color_Mode_Open()
 end
 
 local function Color_Mode_Open_Admin()
-    PrintTable(Color_Mode.Config)
     local Main_Frame = vgui.Create("DFrame")
     Main_Frame:SetSize(Color_Mode.Config.Size.x, Color_Mode.Config.Size.y)
     Main_Frame:Center()
@@ -283,9 +289,11 @@ local function Color_Mode_Open_Admin()
     Main_Frame.Paint = function(s, w, h)
         draw.RoundedBox(8, 0, 0, w, h, Color_Mode.Config.BackGroundColor)
         draw.RoundedBox(0, 0, 0, w, 23, Color_Mode.Config.ButtonColor)
-        draw.SimpleText(Color_Mode.Language.Language, "Trebuchet18", 130, 50.5, Color(255,255,255,255))   
-        draw.SimpleText(Color_Mode.Language.Default_Mode, "Trebuchet18", 130, 100.5, Color(255,255,255,255))
-        draw.SimpleText(Color_Mode.Language.Button_Top, "Trebuchet18", 130, 150.5, Color(255,255,255,255))
+    --    draw.RoundedBox(4, w-220, 43, 200, 200, Color_Mode.Config.ButtonColor)
+    --    draw.RoundedBox(4, w-170, 43, 150, 200, Color_Mode.Config.ButtonColor)
+        draw.SimpleText(Color_Mode.Language.Language, "Trebuchet18", 475, 50.5, Color(255,255,255,255))   
+        draw.SimpleText(Color_Mode.Language.Default_Mode, "Trebuchet18", 475, 100.5, Color(255,255,255,255))
+        draw.SimpleText(Color_Mode.Language.Button_Top, "Trebuchet18", 475, 150.5, Color(255,255,255,255))
     end
 
     local Button_Close = vgui.Create("DButton", Main_Frame)
@@ -314,7 +322,7 @@ local function Color_Mode_Open_Admin()
     end
 
     local ComboBox_Language = vgui.Create("DComboBox", Main_Frame)
-    ComboBox_Language:SetPos(20, 43)
+    ComboBox_Language:SetPos(360, 43)
     ComboBox_Language:SetSize(100, 30)
     ComboBox_Language:SetColor(Color(255,255,255))
     ComboBox_Language:SetValue(Color_Mode.Config.Language)
@@ -328,7 +336,7 @@ local function Color_Mode_Open_Admin()
     end
 
     local ComboBox_Default_Mode = vgui.Create("DComboBox", Main_Frame)
-    ComboBox_Default_Mode:SetPos(20, 93)
+    ComboBox_Default_Mode:SetPos(360, 93)
     ComboBox_Default_Mode:SetSize(100, 30)
     ComboBox_Default_Mode:SetColor(Color(255,255,255))
     ComboBox_Default_Mode:SetValue(Color_Mode.Config.Default_Mode)
@@ -342,7 +350,7 @@ local function Color_Mode_Open_Admin()
     end
 
     local ComboBox_Button_Top = vgui.Create("DComboBox", Main_Frame)
-    ComboBox_Button_Top:SetPos(20, 143)
+    ComboBox_Button_Top:SetPos(360, 143)
     ComboBox_Button_Top:SetSize(100, 30)
     ComboBox_Button_Top:SetColor(Color(255,255,255))
     if Color_Mode.Config.Button_on_Top then ComboBox_Button_Top:SetValue("true") else ComboBox_Button_Top:SetValue("false") end
@@ -353,6 +361,61 @@ local function Color_Mode_Open_Admin()
     end
     ComboBox_Button_Top.Paint = function(s, w, h)
         draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
+    end
+
+    local Color_Frame = vgui.Create("DFrame", Main_Frame)
+    Color_Frame:SetPos(20, 43-22)
+    Color_Frame:SetSize(300, 239)
+    Color_Frame:SetDraggable("false")
+    Color_Frame:ShowCloseButton(false)
+    Color_Frame:SetTitle(" ")
+    Color_Frame.Paint = function(s, w, h)
+        draw.RoundedBox(4, 0, 22, w, h-22 , Color_Mode.Config.ButtonColor)
+    end    
+
+    local Mixer = vgui.Create("DColorMixer", Color_Frame)
+    Mixer:Dock(FILL)
+    Mixer:SetPalette(true)
+    Mixer:SetAlphaBar(true)
+    Mixer:SetWangs(true)
+    Mixer:SetColor(Color(30,100,160))
+
+    local ComboBox_Color = vgui.Create("DComboBox", Main_Frame)
+    ComboBox_Color:SetPos(20, Color_Mode.Config.Size.y-60)
+    ComboBox_Color:SetSize(140, 40)
+    ComboBox_Color:SetColor(Color(255,255,255))
+    ComboBox_Color:SetValue(Color_Mode.Config.Default_Mode)
+    ComboBox_Color:AddChoice("Text Color")
+    ComboBox_Color:AddChoice("First Color")
+    ComboBox_Color:AddChoice("Sedond Color")
+    ComboBox_Color.OnSelect = function(self, index, value)
+        if value == "Text Color" then
+            Main_Frame.Paint = function(s, w, h)
+                draw.SimpleText(Color_Mode.Language.Language, "Trebuchet18", 475, 50.5, Mixer:GetColor())   
+                draw.SimpleText(Color_Mode.Language.Default_Mode, "Trebuchet18", 475, 100.5, Mixer:GetColor())
+                draw.SimpleText(Color_Mode.Language.Button_Top, "Trebuchet18", 475, 150.5, Mixer:GetColor())
+            end
+
+        elseif value == "Text Color" then
+            
+        else
+
+        end
+    end
+    ComboBox_Color.Paint = function(s, w, h)
+        draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
+    end
+
+    local Button_Color_2 = vgui.Create("DButton", Main_Frame)
+    Button_Color_2:SetText(Color_Mode.Language.Custom_Mode_Save)
+    Button_Color_2:SetPos(180, Color_Mode.Config.Size.y-60)	
+    Button_Color_2:SetSize(140, 40)
+    Button_Color_2:SetColor(Color(255,255,255))
+    Button_Color_2.Paint = function(s, w, h)
+        draw.RoundedBox(4, 0, 0, w, h, Mixer:GetColor())
+    end
+    Button_Color_2.DoClick = function()        
+        print(Mixer:GetColor())   
     end
 
     local Button_4 = vgui.Create("DButton", Main_Frame)
@@ -389,13 +452,3 @@ concommand.Add("color_mode_open_admin", function(ply, cmd, args)
     end
 end)
 concommand.Add("color_mode_open", Color_Mode_Open)
-
-
-net.Receive("color_mode_ply_load", function()
-    PrintTable(Color_Mode.Config)
-    
-    Color_Mode.Config = net.ReadTable()
-    Color_Mode.Admin_Config = Color_Mode.Config
-    include(folder .. "/language/" .. Color_Mode.Config.Language .. ".lua")
-    print(folder .. "/language/" .. Color_Mode.Config.Language .. ".lua")
-end)

@@ -4,7 +4,7 @@
 Color_Mode.Config = Color_Mode.Config or {}
 Color_Mode.Config.Version = 1
 
-Color_Mode.Config.Language = "french" -- french or english
+Color_Mode.Config.Language = "english" -- french or english
 
 --Color_Mode.Language[Color_Mode.Config.Language]
 
@@ -32,7 +32,7 @@ Color_Mode.Config.Commands_Admin = {
 Color_Mode.Config.Admin = { 
     ["superadmin"] = true,
     ["admin"] = false
-}
+} 
 
 Color_Mode.Color_Default = {
     ["$pp_colour_addr"]         = 0,
