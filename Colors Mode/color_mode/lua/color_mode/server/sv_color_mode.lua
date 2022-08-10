@@ -27,7 +27,7 @@ net.Receive("color_mode_save_config", function(len, ply)
     end
 end)
 
-hook.Add( "PlayerSpawn", "Color_Mode_Config", function( ply )
+hook.Add("PlayerInitialSpawn", "Color_Mode_Config", function(ply)
 	net.Start("color_mode_ply_load")
         net.WriteTable(Color_Mode.Config)
     net.Send(ply)

@@ -1,13 +1,16 @@
-local folder = "color_mode"
 local button_y = 0
 local slider_y = {}
 
-net.Receive("color_mode_ply_load", function()
+net.Receive("color_mode_ply_load", function(ply)
     Color_Mode.Config = net.ReadTable()
     Color_Mode.Admin_Config = Color_Mode.Config
-    include(folder .. "/language/" .. Color_Mode.Config.Language .. ".lua")
+    include("color_mode/language/" .. Color_Mode.Config.Language .. ".lua")
+    if Color_Mode.Config.Init_Message then 
+        timer.Simple(5, function()
+            chat.AddText( Color( 100, 100, 255 ), "| Color Mode | ", Color( 255, 255, 255 ), Color_Mode.Language.Init_Message)
+        end)
+    end
 end)
-
 
 if !file.Exists("linventif", "data") then
     file.CreateDir("linventif")
@@ -39,7 +42,6 @@ else
         [3] = 175
     }
 end
-local ply_load = false
 
 Color_Mode.Color = util.JSONToTable(file.Read("linventif/color_mode.json", "DATA"))
 hook.Add("RenderScreenspaceEffects", "RefreshColors", function()
@@ -90,7 +92,7 @@ local function Color_Mode_Open()
     local Num_Slider_1 = vgui.Create("DNumSlider", Main_Frame)
     Num_Slider_1:SetPos(50, slider_y[1])
     Num_Slider_1:SetSize(300, 100)
-    Num_Slider_1:SetText(Color_Mode.Language.Addr)
+    Num_Slider_1:SetText(Color_Mode.Language.Red)
     Num_Slider_1:SetValue(Color_Mode.Color["$pp_colour_addr"])
     Num_Slider_1:SetMin(0)
     Num_Slider_1:SetMax(1)
@@ -105,7 +107,7 @@ local function Color_Mode_Open()
     local Num_Slider_2 = vgui.Create("DNumSlider", Main_Frame)
     Num_Slider_2:SetPos(50, slider_y[2])			
     Num_Slider_2:SetSize(300, 100)		
-    Num_Slider_2:SetText(Color_Mode.Language.Addg)
+    Num_Slider_2:SetText(Color_Mode.Language.Green)
     Num_Slider_2:SetValue(Color_Mode.Color["$pp_colour_addg"])
     Num_Slider_2:SetMin(0)
     Num_Slider_2:SetMax(1)
@@ -120,7 +122,7 @@ local function Color_Mode_Open()
     local Num_Slider_3 = vgui.Create("DNumSlider", Main_Frame)
     Num_Slider_3:SetPos(50, slider_y[3])			
     Num_Slider_3:SetSize(300, 100)		
-    Num_Slider_3:SetText(Color_Mode.Language.Addb)
+    Num_Slider_3:SetText(Color_Mode.Language.Blue)
     Num_Slider_3:SetValue(Color_Mode.Color["$pp_colour_addb"])
     Num_Slider_3:SetMin(0)				
     Num_Slider_3:SetMax(1)				
@@ -219,7 +221,7 @@ local function Color_Mode_Open()
     end
 
     local Button_3 = vgui.Create("DButton", Main_Frame)
-    Button_3:SetText(Color_Mode.Language.Custom_Mode_Load)
+    Button_3:SetText(Color_Mode.Language.Mode_Load)
     Button_3:SetPos(405, button_y)
     Button_3:SetSize(120, 40)
     Button_3:SetColor(Color(255,255,255))
@@ -238,14 +240,14 @@ local function Color_Mode_Open()
             hook.Add("RenderScreenspaceEffects", "RefreshColors", function()
                 DrawColorModify(Color_Mode.Color)
             end)
-            notification.AddLegacy(Color_Mode.Language.All_Load, 0, 3)
+            notification.AddLegacy(Color_Mode.Language.Config_Load, 0, 3)
         else 
-            notification.AddLegacy(Color_Mode.Language.No_Config, 1, 3)
+            notification.AddLegacy(Color_Mode.Language.Config_Not_Found, 1, 3)
         end
     end
 
     local Button_4 = vgui.Create("DButton", Main_Frame)
-    Button_4:SetText(Color_Mode.Language.Custom_Mode_Save)
+    Button_4:SetText(Color_Mode.Language.Mode_Save)
     Button_4:SetPos(Color_Mode.Config.Size.x-168, button_y)	
     Button_4:SetSize(120, 40)
     Button_4:SetColor(Color(255,255,255))
@@ -292,8 +294,8 @@ local function Color_Mode_Open_Admin()
     --    draw.RoundedBox(4, w-220, 43, 200, 200, Color_Mode.Config.ButtonColor)
     --    draw.RoundedBox(4, w-170, 43, 150, 200, Color_Mode.Config.ButtonColor)
         draw.SimpleText(Color_Mode.Language.Language, "Trebuchet18", 475, 50.5, Color(255,255,255,255))   
-        draw.SimpleText(Color_Mode.Language.Default_Mode, "Trebuchet18", 475, 100.5, Color(255,255,255,255))
-        draw.SimpleText(Color_Mode.Language.Button_Top, "Trebuchet18", 475, 150.5, Color(255,255,255,255))
+        draw.SimpleText(Color_Mode.Language.Mode_Default, "Trebuchet18", 475, 100.5, Color(255,255,255,255))
+        draw.SimpleText(Color_Mode.Language.Button_Placement, "Trebuchet18", 475, 150.5, Color(255,255,255,255))
     end
 
     local Button_Close = vgui.Create("DButton", Main_Frame)
@@ -384,30 +386,26 @@ local function Color_Mode_Open_Admin()
     ComboBox_Color:SetPos(20, Color_Mode.Config.Size.y-60)
     ComboBox_Color:SetSize(140, 40)
     ComboBox_Color:SetColor(Color(255,255,255))
-    ComboBox_Color:SetValue(Color_Mode.Config.Default_Mode)
+    ComboBox_Color:SetValue("Element Color")
     ComboBox_Color:AddChoice("Text Color")
     ComboBox_Color:AddChoice("First Color")
     ComboBox_Color:AddChoice("Sedond Color")
     ComboBox_Color.OnSelect = function(self, index, value)
-        if value == "Text Color" then
-            Main_Frame.Paint = function(s, w, h)
-                draw.SimpleText(Color_Mode.Language.Language, "Trebuchet18", 475, 50.5, Mixer:GetColor())   
-                draw.SimpleText(Color_Mode.Language.Default_Mode, "Trebuchet18", 475, 100.5, Mixer:GetColor())
-                draw.SimpleText(Color_Mode.Language.Button_Top, "Trebuchet18", 475, 150.5, Mixer:GetColor())
-            end
-
-        elseif value == "Text Color" then
-            
-        else
-
-        end
+    --    if value == ""Element Color"" then
+    --        notification.AddLegacy(Color_Mode.Language.NotiNone_Element, 0, 6)
+    --    elseif value == "Pther" then
+    --    else
+    --    elseif value == "Pther" then
+    --    else
+    --    end
     end
     ComboBox_Color.Paint = function(s, w, h)
         draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
     end
 
+    PrintTable(Mixer:GetColor())
     local Button_Color_2 = vgui.Create("DButton", Main_Frame)
-    Button_Color_2:SetText(Color_Mode.Language.Custom_Mode_Save)
+    Button_Color_2:SetText(Color_Mode.Language.Mode_Save)
     Button_Color_2:SetPos(180, Color_Mode.Config.Size.y-60)	
     Button_Color_2:SetSize(140, 40)
     Button_Color_2:SetColor(Color(255,255,255))
@@ -419,7 +417,7 @@ local function Color_Mode_Open_Admin()
     end
 
     local Button_4 = vgui.Create("DButton", Main_Frame)
-    Button_4:SetText(Color_Mode.Language.Custom_Mode_Save)
+    Button_4:SetText(Color_Mode.Language.Mode_Save)
     Button_4:SetPos(Color_Mode.Config.Size.x-168, Color_Mode.Config.Size.y-65)	
     Button_4:SetSize(120, 40)
     Button_4:SetColor(Color(255,255,255))
@@ -431,7 +429,7 @@ local function Color_Mode_Open_Admin()
         net.Start("color_mode_save_config")
         net.WriteTable(Color_Mode.Admin_Config)
         net.SendToServer()
-        notification.AddLegacy(Color_Mode.Language.Config_Save_Admin, 0, 6)
+        notification.AddLegacy(Color_Mode.Language.Config_Save, 0, 6)
     end
 end
 
@@ -439,7 +437,7 @@ net.Receive("color_mode_open_admin", function(_, ply)
     if Color_Mode.Config.Admin[LocalPlayer():GetUserGroup()] then
         Color_Mode_Open_Admin()
     else
-        notification.AddLegacy(Color_Mode.Language.Not_Admin, 1, 3)
+        notification.AddLegacy(Color_Mode.Language.Access_Refused, 1, 3)
     end
 end)
 net.Receive("color_mode_open", Color_Mode_Open)
@@ -448,7 +446,7 @@ concommand.Add("color_mode_open_admin", function(ply, cmd, args)
     if Color_Mode.Config.Admin[LocalPlayer():GetUserGroup()] then
         Color_Mode_Open_Admin()
     else
-        notification.AddLegacy(Color_Mode.Language.Not_Admin, 1, 3)
+        notification.AddLegacy(Color_Mode.Language.Access_Refused, 1, 3)
     end
 end)
 concommand.Add("color_mode_open", Color_Mode_Open)

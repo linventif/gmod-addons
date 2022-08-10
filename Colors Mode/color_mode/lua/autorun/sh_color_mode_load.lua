@@ -15,15 +15,15 @@ print(" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 print(" ")
 print(" ")
 
-local addon_name = "color_mode"
-Color_Mode = Color_Mode or {}
+local Folder = "color_mode"
+Color_Mode = {}
 
-AddCSLuaFile(addon_name .. "/sh_config.lua")
-include(addon_name .. "/sh_config.lua")
+AddCSLuaFile(Folder .. "/sh_config.lua")
+include(Folder .. "/sh_config.lua")
 
 if SERVER then
-    print("| OK | addons/" .. addon_name .. "/lua/autorun/" .. addon_name .. "_load.lua")
-    print("| OK | addons/" .. addon_name .. "/lua/" .. addon_name .. "/sh_config.lua")
+    print("| Color Mode | File Load | addons/" .. Folder .. "/lua/autorun/sh_" .. Folder .. "_load.lua")
+    print("| Color Mode | File Load | addons/" .. Folder .. "/lua/" .. Folder .. "/sh_config.lua")
     
     if !file.Exists("linventif", "data") then
         file.CreateDir("linventif")
@@ -31,28 +31,52 @@ if SERVER then
     elseif !file.Exists("linventif/color_mode.json", "DATA") then
         file.Write("linventif/color_mode.json", util.TableToJSON(Color_Mode.Config))
     else
-        Color_Mode.Config = util.JSONToTable(file.Read("linventif/color_mode.json", "DATA"))
-        print("| OK | data/linventif/color_mode.json")
+        local Config_Read = {}
+        Config_Read = util.JSONToTable(file.Read("linventif/color_mode.json", "DATA"))
+        if Color_Mode.Config.Version != Config_Read.Version then
+            table.CopyFromTo(Color_Mode.Config, Config_Read)
+            print("| Color Mode | New Version Load | v" .. Color_Mode.Config.Version)
+            file.Write("linventif/color_mode.json", util.TableToJSON(Color_Mode.Config))
+        end
+        print("| Color Mode | File Load | data/linventif/color_mode.json")
     end
-
-    for k, v in ipairs(file.Find(addon_name .. "/language/*.lua", "LUA")) do
-		AddCSLuaFile(addon_name .. "/language/" .. v)
-        print("| OK | addons/" .. addon_name .. "/lua/" .. addon_name .. "/language/" .. v)
+    for k, v in ipairs(file.Find(Folder .. "/language/*.lua", "LUA")) do
+		AddCSLuaFile(Folder .. "/language/" .. v)
+        print("| Color Mode | File Load | addons/" .. Folder .. "/lua/" .. Folder .. "/language/" .. v)
 	end
 
-	for k, v in ipairs(file.Find(addon_name .. "/client/*.lua", "LUA")) do
-		AddCSLuaFile(addon_name .. "/client/" .. v)
-        print("| OK | addons/" .. addon_name .. "/lua/" .. addon_name .. "/client/" .. v)
+	for k, v in ipairs(file.Find(Folder .. "/client/*.lua", "LUA")) do
+		AddCSLuaFile(Folder .. "/client/" .. v)
+        print("| Color Mode | File Load | addons/" .. Folder .. "/lua/" .. Folder .. "/client/" .. v)
 	end
 
-	for k, v in ipairs(file.Find(addon_name .. "/server/*.lua", "LUA")) do
-		include(addon_name .. "/server/" .. v)
-        print("| OK | addons/" .. addon_name .. "/lua/" .. addon_name .. "/server/" .. v)
+	for k, v in ipairs(file.Find(Folder .. "/server/*.lua", "LUA")) do
+		include(Folder .. "/server/" .. v)
+        print("| Color Mode | File Load | addons/" .. Folder .. "/lua/" .. Folder .. "/server/" .. v)
 	end
     print(" ")
     print(" ")
-else
-    for k, v in ipairs(file.Find(addon_name .. "/client/*.lua", "LUA")) do
-        include(addon_name .. "/client/" .. v)
+else    
+    for k, v in ipairs(file.Find(Folder .. "/client/*.lua", "LUA")) do
+        include(Folder .. "/client/" .. v)
     end
 end
+
+
+--[[
+    Features
+        General
+            Full in game configuration
+            Language in French, English or Russian
+        User
+            Create and save custom color mode (color modificator)
+            in game menu
+
+        Admin
+            Change Language
+            Allow user to use they own configuration or not
+
+        Future Update 
+            Admin can change the color boost parameter
+            Admin can Change the ui
+]]--
