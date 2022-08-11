@@ -7,10 +7,53 @@ net.Receive("color_mode_ply_load", function(ply)
     include("color_mode/language/" .. Color_Mode.Config.Language .. ".lua")
     if Color_Mode.Config.Init_Message then 
         timer.Simple(5, function()
-            chat.AddText( Color( 100, 100, 255 ), "| Color Mode | ", Color( 255, 255, 255 ), Color_Mode.Language.Init_Message)
+            chat.AddText( Color( 100, 100, 255 ), "[ Color Mode ]  ", Color( 255, 255, 255 ), Color_Mode.Language.Init_Message)
         end)
     end
+
+    if Color_Mode.Config.Button_on_Top then
+        button_y = 45
+        slider_y = {
+            [1] = 80,
+            [2] = 160,
+            [3] = 240
+        }
+    else
+        button_y = Color_Mode.Config.Size.y-75
+        slider_y = {
+            [1] = 15,
+            [2] = 80,
+            [3] = 145
+        }
+    end
 end)
+
+if Color_Mode.Config.Button_on_Top then
+    button_y = 45
+    slider_y = {
+        [1] = 80,
+        [2] = 160,
+        [3] = 240
+    }
+else
+    button_y = Color_Mode.Config.Size.y-75
+    slider_y = {
+        [1] = 15,
+        [2] = 80,
+        [3] = 145
+    }
+end
+
+--  if Color_Mode.Config.Theme == "Light" then
+--      Color_Mode.Config.BackGroundColor = Color(32, 32, 32)
+--      Color_Mode.Config.ButtonColor = Color(60, 90, 120)
+--  elseif Color_Mode.Config.Theme == "Purple" then
+--      Color_Mode.Config.BackGroundColor = Color(32, 32, 32)
+--      Color_Mode.Config.ButtonColor = Color(60, 90, 120)
+--  else -- Default Theme = Dark
+--      Color_Mode.Config.BackGroundColor = Color(32, 32, 32)
+--      Color_Mode.Config.ButtonColor = Color(60, 90, 120)
+--  end
 
 if !file.Exists("linventif", "data") then
     file.CreateDir("linventif")
@@ -27,22 +70,6 @@ elseif !file.Exists("linventif/color_mode.json", "DATA") then
     end
 end
 
-if Color_Mode.Config.Button_on_Top then
-    button_y = 45
-    slider_y = {
-        [1] = 80,
-        [2] = 160,
-        [3] = 240
-    }
-else
-    button_y = Color_Mode.Config.Size.y-65
-    slider_y = {
-        [1] = 15,
-        [2] = 95,
-        [3] = 175
-    }
-end
-
 Color_Mode.Color = util.JSONToTable(file.Read("linventif/color_mode.json", "DATA"))
 hook.Add("RenderScreenspaceEffects", "RefreshColors", function()
     DrawColorModify(Color_Mode.Color)
@@ -53,7 +80,7 @@ local function Color_Mode_Open()
     local Main_Frame = vgui.Create("DFrame")
     Main_Frame:SetSize(Color_Mode.Config.Size.x, Color_Mode.Config.Size.y)
     Main_Frame:Center()
-    Main_Frame:SetTitle("Color Mode by Linventif | v" .. Color_Mode.Config.Version)
+    Main_Frame:SetTitle("Color Mode v" .. Color_Mode.Config.Version)
     Main_Frame:MakePopup()
     Main_Frame:SetDraggable(true)
     Main_Frame:ShowCloseButton(false)
@@ -90,7 +117,7 @@ local function Color_Mode_Open()
     end
 
     local Num_Slider_1 = vgui.Create("DNumSlider", Main_Frame)
-    Num_Slider_1:SetPos(50, slider_y[1])
+    Num_Slider_1:SetPos(35, slider_y[1])
     Num_Slider_1:SetSize(300, 100)
     Num_Slider_1:SetText(Color_Mode.Language.Red)
     Num_Slider_1:SetValue(Color_Mode.Color["$pp_colour_addr"])
@@ -105,7 +132,7 @@ local function Color_Mode_Open()
     end
     
     local Num_Slider_2 = vgui.Create("DNumSlider", Main_Frame)
-    Num_Slider_2:SetPos(50, slider_y[2])			
+    Num_Slider_2:SetPos(35, slider_y[2])			
     Num_Slider_2:SetSize(300, 100)		
     Num_Slider_2:SetText(Color_Mode.Language.Green)
     Num_Slider_2:SetValue(Color_Mode.Color["$pp_colour_addg"])
@@ -120,7 +147,7 @@ local function Color_Mode_Open()
     end
  
     local Num_Slider_3 = vgui.Create("DNumSlider", Main_Frame)
-    Num_Slider_3:SetPos(50, slider_y[3])			
+    Num_Slider_3:SetPos(35, slider_y[3])			
     Num_Slider_3:SetSize(300, 100)		
     Num_Slider_3:SetText(Color_Mode.Language.Blue)
     Num_Slider_3:SetValue(Color_Mode.Color["$pp_colour_addb"])
@@ -136,7 +163,7 @@ local function Color_Mode_Open()
     end
  
     local Num_Slider_4 = vgui.Create("DNumSlider", Main_Frame)
-    Num_Slider_4:SetPos(422, slider_y[1])
+    Num_Slider_4:SetPos(398, slider_y[1])
     Num_Slider_4:SetSize(300, 100)
     Num_Slider_4:SetText(Color_Mode.Language.Brightness)
     Num_Slider_4:SetValue(Color_Mode.Color["$pp_colour_brightness"])
@@ -151,7 +178,7 @@ local function Color_Mode_Open()
     end
  
     local Num_Slider_5 = vgui.Create("DNumSlider", Main_Frame)
-    Num_Slider_5:SetPos(422, slider_y[2])			
+    Num_Slider_5:SetPos(398, slider_y[2])			
     Num_Slider_5:SetSize(300, 100)		
     Num_Slider_5:SetText(Color_Mode.Language.Contrast)
     Num_Slider_5:SetValue(Color_Mode.Color["$pp_colour_contrast"])
@@ -166,7 +193,7 @@ local function Color_Mode_Open()
     end
  
     local Num_Slider_6 = vgui.Create("DNumSlider", Main_Frame)
-    Num_Slider_6:SetPos(422, slider_y[3])			
+    Num_Slider_6:SetPos(398, slider_y[3])			
     Num_Slider_6:SetSize(300, 100)		
     Num_Slider_6:SetText(Color_Mode.Language.Color)
     Num_Slider_6:SetValue(Color_Mode.Color["$pp_colour_colour"])
@@ -182,7 +209,7 @@ local function Color_Mode_Open()
 
     local Button_1 = vgui.Create("DButton", Main_Frame) 
     Button_1:SetText(Color_Mode.Language.Mode_Reset)
-    Button_1:SetPos(48, button_y)
+    Button_1:SetPos(35, button_y)
     Button_1:SetSize(120, 40)
     Button_1:SetColor(Color(255,255,255))
     Button_1.Paint = function(s, w, h)
@@ -202,7 +229,7 @@ local function Color_Mode_Open()
 
     local Button_2 = vgui.Create("DButton", Main_Frame) 
     Button_2:SetText(Color_Mode.Language.Mode_Boost)	
-    Button_2:SetPos(225, button_y)	
+    Button_2:SetPos(209, button_y)	
     Button_2:SetSize(120, 40)        
     Button_2:SetColor(Color(255,255,255))            
     Button_2.Paint = function(s, w, h)
@@ -222,7 +249,7 @@ local function Color_Mode_Open()
 
     local Button_3 = vgui.Create("DButton", Main_Frame)
     Button_3:SetText(Color_Mode.Language.Mode_Load)
-    Button_3:SetPos(405, button_y)
+    Button_3:SetPos(383, button_y)
     Button_3:SetSize(120, 40)
     Button_3:SetColor(Color(255,255,255))
     Button_3.Paint = function(s, w, h)
@@ -248,7 +275,7 @@ local function Color_Mode_Open()
 
     local Button_4 = vgui.Create("DButton", Main_Frame)
     Button_4:SetText(Color_Mode.Language.Mode_Save)
-    Button_4:SetPos(Color_Mode.Config.Size.x-168, button_y)	
+    Button_4:SetPos(557, button_y)
     Button_4:SetSize(120, 40)
     Button_4:SetColor(Color(255,255,255))
     Button_4.Paint = function(s, w, h)
@@ -284,18 +311,19 @@ local function Color_Mode_Open_Admin()
     local Main_Frame = vgui.Create("DFrame")
     Main_Frame:SetSize(Color_Mode.Config.Size.x, Color_Mode.Config.Size.y)
     Main_Frame:Center()
-    Main_Frame:SetTitle("Color Mode by Linventif | v" .. Color_Mode.Config.Version .. " | Administration")
+    Main_Frame:SetTitle("Color Mode v" .. Color_Mode.Config.Version .. " | Administration")
     Main_Frame:MakePopup()
     Main_Frame:SetDraggable(true)
     Main_Frame:ShowCloseButton(false)
     Main_Frame.Paint = function(s, w, h)
         draw.RoundedBox(8, 0, 0, w, h, Color_Mode.Config.BackGroundColor)
         draw.RoundedBox(0, 0, 0, w, 23, Color_Mode.Config.ButtonColor)
-    --    draw.RoundedBox(4, w-220, 43, 200, 200, Color_Mode.Config.ButtonColor)
-    --    draw.RoundedBox(4, w-170, 43, 150, 200, Color_Mode.Config.ButtonColor)
-        draw.SimpleText(Color_Mode.Language.Language, "Trebuchet18", 475, 50.5, Color(255,255,255,255))   
-        draw.SimpleText(Color_Mode.Language.Mode_Default, "Trebuchet18", 475, 100.5, Color(255,255,255,255))
-        draw.SimpleText(Color_Mode.Language.Button_Placement, "Trebuchet18", 475, 150.5, Color(255,255,255,255))
+        draw.SimpleText(Color_Mode.Language.Language, "Trebuchet18", 150, 66, Color(255,255,255,255))   
+        draw.SimpleText(Color_Mode.Language.Mode_Default, "Trebuchet18", 150, 132, Color(255,255,255,255))
+        draw.SimpleText(Color_Mode.Language.Button_Placement, "Trebuchet18", 150, 194, Color(255,255,255,255))
+        draw.SimpleText(Color_Mode.Language.Enable_Init_Message, "Trebuchet18", 150, 255, Color(255,255,255,255))
+        draw.SimpleText(Color_Mode.Language.Themes, "Trebuchet18", 470, 66, Color(255,255,255,255))
+        draw.SimpleText("New admin options coming to the next update", "Trebuchet18", 395, 150, Color(255,255,255,255))
     end
 
     local Button_Close = vgui.Create("DButton", Main_Frame)
@@ -324,12 +352,13 @@ local function Color_Mode_Open_Admin()
     end
 
     local ComboBox_Language = vgui.Create("DComboBox", Main_Frame)
-    ComboBox_Language:SetPos(360, 43)
+    ComboBox_Language:SetPos(35, 58)
     ComboBox_Language:SetSize(100, 30)
     ComboBox_Language:SetColor(Color(255,255,255))
     ComboBox_Language:SetValue(Color_Mode.Config.Language)
     ComboBox_Language:AddChoice("French")
     ComboBox_Language:AddChoice("English")
+    ComboBox_Language:AddChoice("Russian")
     ComboBox_Language.OnSelect = function(self, index, value)
         Color_Mode.Admin_Config.Language = string.lower( value )
     end
@@ -338,7 +367,7 @@ local function Color_Mode_Open_Admin()
     end
 
     local ComboBox_Default_Mode = vgui.Create("DComboBox", Main_Frame)
-    ComboBox_Default_Mode:SetPos(360, 93)
+    ComboBox_Default_Mode:SetPos(35, 125)
     ComboBox_Default_Mode:SetSize(100, 30)
     ComboBox_Default_Mode:SetColor(Color(255,255,255))
     ComboBox_Default_Mode:SetValue(Color_Mode.Config.Default_Mode)
@@ -352,7 +381,7 @@ local function Color_Mode_Open_Admin()
     end
 
     local ComboBox_Button_Top = vgui.Create("DComboBox", Main_Frame)
-    ComboBox_Button_Top:SetPos(360, 143)
+    ComboBox_Button_Top:SetPos(35, 187)
     ComboBox_Button_Top:SetSize(100, 30)
     ComboBox_Button_Top:SetColor(Color(255,255,255))
     if Color_Mode.Config.Button_on_Top then ComboBox_Button_Top:SetValue("true") else ComboBox_Button_Top:SetValue("false") end
@@ -365,66 +394,130 @@ local function Color_Mode_Open_Admin()
         draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
     end
 
-    local Color_Frame = vgui.Create("DFrame", Main_Frame)
-    Color_Frame:SetPos(20, 43-22)
-    Color_Frame:SetSize(300, 239)
-    Color_Frame:SetDraggable("false")
-    Color_Frame:ShowCloseButton(false)
-    Color_Frame:SetTitle(" ")
-    Color_Frame.Paint = function(s, w, h)
-        draw.RoundedBox(4, 0, 22, w, h-22 , Color_Mode.Config.ButtonColor)
-    end    
-
-    local Mixer = vgui.Create("DColorMixer", Color_Frame)
-    Mixer:Dock(FILL)
-    Mixer:SetPalette(true)
-    Mixer:SetAlphaBar(true)
-    Mixer:SetWangs(true)
-    Mixer:SetColor(Color(30,100,160))
-
-    local ComboBox_Color = vgui.Create("DComboBox", Main_Frame)
-    ComboBox_Color:SetPos(20, Color_Mode.Config.Size.y-60)
-    ComboBox_Color:SetSize(140, 40)
-    ComboBox_Color:SetColor(Color(255,255,255))
-    ComboBox_Color:SetValue("Element Color")
-    ComboBox_Color:AddChoice("Text Color")
-    ComboBox_Color:AddChoice("First Color")
-    ComboBox_Color:AddChoice("Sedond Color")
-    ComboBox_Color.OnSelect = function(self, index, value)
-    --    if value == ""Element Color"" then
-    --        notification.AddLegacy(Color_Mode.Language.NotiNone_Element, 0, 6)
-    --    elseif value == "Pther" then
-    --    else
-    --    elseif value == "Pther" then
-    --    else
-    --    end
+    local ComboBox_Init_Message = vgui.Create("DComboBox", Main_Frame)
+    ComboBox_Init_Message:SetPos(35, 248)
+    ComboBox_Init_Message:SetSize(100, 30)
+    ComboBox_Init_Message:SetColor(Color(255,255,255))
+    if Color_Mode.Config.Init_Message then ComboBox_Init_Message:SetValue("true") else ComboBox_Init_Message:SetValue("false") end
+    ComboBox_Init_Message:AddChoice("True")
+    ComboBox_Init_Message:AddChoice("False")
+    ComboBox_Init_Message.OnSelect = function(self, index, value)
+        if value != "True" then Color_Mode.Admin_Config.Init_Message = false else Color_Mode.Admin_Config.Init_Message = true end
     end
-    ComboBox_Color.Paint = function(s, w, h)
+    ComboBox_Init_Message.Paint = function(s, w, h)
         draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
     end
 
-    PrintTable(Mixer:GetColor())
-    local Button_Color_2 = vgui.Create("DButton", Main_Frame)
-    Button_Color_2:SetText(Color_Mode.Language.Mode_Save)
-    Button_Color_2:SetPos(180, Color_Mode.Config.Size.y-60)	
-    Button_Color_2:SetSize(140, 40)
-    Button_Color_2:SetColor(Color(255,255,255))
-    Button_Color_2.Paint = function(s, w, h)
-        draw.RoundedBox(4, 0, 0, w, h, Mixer:GetColor())
+    local ComboBox_Themes = vgui.Create("DComboBox", Main_Frame)
+    ComboBox_Themes:SetPos(355, 58)
+    ComboBox_Themes:SetSize(100, 30)
+    ComboBox_Themes:SetColor(Color(255,255,255))
+    ComboBox_Themes:SetValue(Color_Mode.Config.Theme)
+    ComboBox_Themes:AddChoice("Dark")
+    ComboBox_Themes:AddChoice("Light")
+    ComboBox_Themes:AddChoice("Custom")
+    ComboBox_Themes.OnSelect = function(self, index, value)
+        notification.AddLegacy(Color_Mode.Language.Feature_in_Dev, 1, 3)
     end
-    Button_Color_2.DoClick = function()        
-        print(Mixer:GetColor())   
+    ComboBox_Themes.Paint = function(s, w, h)
+        draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
     end
 
+--      local Button_4 = vgui.Create("DButton", Main_Frame)
+--      Button_4:SetText(Color_Mode.Language.Mode_Save)
+--      Button_4:SetPos(557, Color_Mode.Config.Size.y-75)
+--      Button_4:SetSize(120, 40)
+--      Button_4:SetColor(Color(255,255,255))
+--      Button_4.Paint = function(s, w, h)
+--          draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
+--      end
+--      Button_4.DoClick = function()
+--          Main_Frame:Close()
+--          net.Start("color_mode_save_config")
+--          net.WriteTable(Color_Mode.Admin_Config)
+--          net.SendToServer()
+--          notification.AddLegacy(Color_Mode.Language.Config_Save, 0, 6)
+--      end
+
+    --local DLabel = vgui.Create( "DLabel", Main_Frame )
+    --DLabel:SetPos( 40, 40 )
+    --DLabel:SetText( "Hello, world!" )
+
+--      local Color_Frame = vgui.Create("DFrame", Main_Frame)
+--      Color_Frame:SetPos(20, 43-22)
+--      Color_Frame:SetSize(300, 239)
+--      Color_Frame:SetDraggable("false")
+--      Color_Frame:ShowCloseButton(false)
+--      Color_Frame:SetTitle(" ")
+--      Color_Frame.Paint = function(s, w, h)
+--          draw.RoundedBox(4, 0, 22, w, h-22 , Color_Mode.Config.ButtonColor)
+--      end    
+--  
+--      local Mixer = vgui.Create("DColorMixer", Color_Frame)
+--      Mixer:Dock(FILL)
+--      Mixer:SetPalette(true)
+--      Mixer:SetAlphaBar(true)
+--      Mixer:SetWangs(true)
+--      Mixer:SetColor(Color(30,100,160))
+--  
+--      local ComboBox_Color = vgui.Create("DComboBox", Main_Frame)
+--      ComboBox_Color:SetPos(20, Color_Mode.Config.Size.y-60)
+--      ComboBox_Color:SetSize(140, 40)
+--      ComboBox_Color:SetColor(Color(255,255,255))
+--      ComboBox_Color:SetValue("Element Color")
+--      ComboBox_Color:AddChoice("Text Color")
+--      ComboBox_Color:AddChoice("First Color")
+--      ComboBox_Color:AddChoice("Sedond Color")
+--      ComboBox_Color.OnSelect = function(self, index, value)
+--      --    if value == ""Element Color"" then
+--      --        notification.AddLegacy(Color_Mode.Language.NotiNone_Element, 0, 6)
+--      --    elseif value == "Pther" then
+--      --    else
+--      --    elseif value == "Pther" then
+--      --    else
+--      --    end
+--      end
+--      ComboBox_Color.Paint = function(s, w, h)
+--          draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
+--      end
+--  
+--      PrintTable(Mixer:GetColor())
+--      local Button_Color_2 = vgui.Create("DButton", Main_Frame)
+--      Button_Color_2:SetText(Color_Mode.Language.Mode_Save)
+--      Button_Color_2:SetPos(180, Color_Mode.Config.Size.y-60)	
+--      Button_Color_2:SetSize(140, 40)
+--      Button_Color_2:SetColor(Color(255,255,255))
+--      Button_Color_2.Paint = function(s, w, h)
+--          draw.RoundedBox(4, 0, 0, w, h, Mixer:GetColor())
+--      end
+--      Button_Color_2.DoClick = function()        
+--          print(Mixer:GetColor())   
+--      end
+
     local Button_4 = vgui.Create("DButton", Main_Frame)
-    Button_4:SetText(Color_Mode.Language.Mode_Save)
-    Button_4:SetPos(Color_Mode.Config.Size.x-168, Color_Mode.Config.Size.y-65)	
+    Button_4:SetText(Color_Mode.Language.Reset_All)
+    Button_4:SetPos(383, Color_Mode.Config.Size.y-75)
     Button_4:SetSize(120, 40)
     Button_4:SetColor(Color(255,255,255))
     Button_4.Paint = function(s, w, h)
         draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
     end
     Button_4.DoClick = function()
+        Main_Frame:Close()
+        net.Start("color_mode_reset_config")
+        net.SendToServer()
+        notification.AddLegacy(Color_Mode.Language.Config_Reset, 0, 6)
+    end
+
+    local Button_5 = vgui.Create("DButton", Main_Frame)
+    Button_5:SetText(Color_Mode.Language.Mode_Save)
+    Button_5:SetPos(557, Color_Mode.Config.Size.y-75)
+    Button_5:SetSize(120, 40)
+    Button_5:SetColor(Color(255,255,255))
+    Button_5.Paint = function(s, w, h)
+        draw.RoundedBox(4, 0, 0, w, h, Color_Mode.Config.ButtonColor)
+    end
+    Button_5.DoClick = function()
         Main_Frame:Close()
         net.Start("color_mode_save_config")
         net.WriteTable(Color_Mode.Admin_Config)

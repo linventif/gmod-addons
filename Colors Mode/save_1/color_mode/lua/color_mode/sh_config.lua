@@ -4,15 +4,21 @@ Color_Mode.Config.Version = 1
 Color_Mode.Config.Language = "english" -- french, english or russian
 
 Color_Mode.Config.Size = {
-    x = 750,
-    y = 340
+    x = 710,
+    y = 313
 }
- 
+
+
 Color_Mode.Config.BackGroundColor = Color(32, 32, 32)
 Color_Mode.Config.ButtonColor = Color(60, 90, 120)
+
 Color_Mode.Config.NotificationsTime = 3
---Color_Mode.Config.Init_Message = true
+
+Color_Mode.Config.Init_Message = true
 Color_Mode.Config.Button_on_Top = false
+
+Color_Mode.Config.Theme = "Dark" -- Dark, Light, Green or Purple
+
 Color_Mode.Config.Default_Mode = "boost" -- normal or boost
 
 Color_Mode.Config.Commands = { 

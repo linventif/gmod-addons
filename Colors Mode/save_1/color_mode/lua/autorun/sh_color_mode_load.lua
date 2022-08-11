@@ -34,12 +34,17 @@ if SERVER then
         local Config_Read = {}
         Config_Read = util.JSONToTable(file.Read("linventif/color_mode.json", "DATA"))
         if Color_Mode.Config.Version != Config_Read.Version then
-            table.CopyFromTo(Color_Mode.Config, Config_Read)
-            print("| Color Mode | New Version Load | v" .. Color_Mode.Config.Version)
+            local version = Color_Mode.Config.Version
+            table.CopyFromTo(Config_Read, Color_Mode.Config)
+            Color_Mode.Config.Version = version
+            print("| Color Mode | New Version Load | v" .. version)
             file.Write("linventif/color_mode.json", util.TableToJSON(Color_Mode.Config))
+        else
+            Color_Mode.Config = Config_Read
         end
         print("| Color Mode | File Load | data/linventif/color_mode.json")
     end
+    
     for k, v in ipairs(file.Find(Folder .. "/language/*.lua", "LUA")) do
 		AddCSLuaFile(Folder .. "/language/" .. v)
         print("| Color Mode | File Load | addons/" .. Folder .. "/lua/" .. Folder .. "/language/" .. v)

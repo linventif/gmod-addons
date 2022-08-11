@@ -14,12 +14,18 @@ Color_Mode.Language = {
 --[[       Admin        ]]--
     Language            =       "язык",
     Mode_Default        =       "Режим по умолчанию",
+    Reset_All           =       "Сбросить все",
     Button_Placement    =       "Размещение кнопки",
+    Themes              =       "Текущие темы",
+    Enable_Init_Message =       "Message dans le Chat",
+    Enable_Custom_Config=       "Activer la configuration ?",
 --[[    Notifications   ]]--
     Config_Load         =       "Color Mode | Загрузка конфигурации",
     Config_Found        =       "Color Mode | Конфигурация найдена",
     Config_Not_Found    =       "Color Mode | Конфигурация не найдена",
+    Config_Not_Allow    =       "Color Mode | Этот сервер не допускает персональную настройку",
     Config_Save         =       "Color Mode | Сохранить конфигурацию",
     Config_Reset        =       "Color Mode | Сброс конфигурации",
-    Access_Refused      =       "Color Mode | В доступе отказано"
+    Access_Refused      =       "Color Mode | В доступе отказано",
+    Feature_in_Dev      =       "Color Mode | Эта функция пока недоступна (в разработке)."
 }
